@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Video Trimmer</title>
+	<!-- <link rel="stylesheet" href="css/bmain.min.css" /> -->
+	<link rel="stylesheet" href="css/bil.css" />
+</head>
+
+<body>
+	
+	
+	<div id="bbody">
+		<!-- <script type="text/javascript">
+			var str_init1 = "Initialization...";
+			var str_init2 = "(If it is the first time to use, it will be slow, please be patient!)";
+			var str_readingFile = "Reading file...";
+			var str_pleaseLoadFile = "No file is selected, please select the video file you want to process first";
+			var str_clicktoSave = "Click to save";
+			var str_converSuccess = "Conversion is complete!";
+			var str_convertFailed = "Processing failed! Please report this issue to help us continue to improve this tool.";
+			var str_browserNotSupport = "Your browser does not support the latest HTML5 technology, please use a new version of the browser.";
+			var str_cancelProcess = "Cancel";
+		</script> -->
+		<!------------------------------------->
+		
+		
+		<div class="brow">
+			<div class="bcontent">
+				<div id="convert_work">
+					<div id="setp1" style="min-height:440px;">
+						<div class="bcol-6">
+							<div class="brow">
+								<div class="tab tabHide">
+									<button class="tablinks" onclick="openTab(event,'fileOpen')" id="tabFileOpen">File
+										Open</button>
+									<button class="tablinks" onclick="openTab(event,'videoPreview')"
+										id="tabVideoPreview">Video preview</button>
+								</div>
+								<div id="fileOpen" class="tabcontent">
+									<div id="filedropzone" style="">
+										<div style="text-align: center;">
+											<div id="openFileBtn" class="bbutton"><i
+													class="fa fa-folder-open-empty"></i>Choose file...</div>
+											<input type="file" id="bfile" name="myfile"
+												accept=".mp4,.webm,.mov,.flv,.3gp,.m4v,.mpg,.mpeg,.mkv,.avi,.wmv,.mv,.dv,.asf,.3g2"
+												style="display:none;">
+											<br>
+											<small>or</small>
+											<br>
+											Drag file here
+										</div>
+										
+									</div>
+									<div id="curFileInput">
+									</div>
+								</div>
+
+								<div id="videoPreview" class="tabcontent" style="text-align: center;">
+									<div style="text-align: right;"><button type="button" aria-label="Close"
+											id="closeVideoPreview"><span aria-hidden="true"
+												style="font-size:30px;cursor: pointer;">×</span></button></div>
+									<!-- <video controls autoplay id="videoplay"></video> -->
+									<video controls id="videoplay"></video>
+									<div id="playmsg">
+									</div>
+									<div id="otherloadjs" style="text-align:center;"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="setp2">
+						<div class="bcol-12">
+							
+							<div class="brow">
+								<div class="tab">
+									<span class="tablinks2" onclick="openTab2(event,'fun_cut')" id="defaultOpen"> </span>
+							
+								</div>
+								<div id="fun_cut" class="tabcontent2">
+									<div class="bcontent">
+										<div id="cutOptions">
+											<div id="trimParam" style="">
+												<div class="brow tcenter">
+													<form id="cutFrm">
+														<div class="oitem">
+															<!-- <label>Start:</label> -->
+															<div style="width:250px;">
+																<input type="text" class="oinput"
+																	placeholder="Start Time e.g.00:00:11.88" id="vcutstart"
+																	title="Set the starting position of the video">
+															</div>
+														</div>
+														<div class="oitem">
+															<!-- <label>End:</label> -->
+															<div style="width:250px;">
+																<input type="text" class="oinput"
+																	placeholder="End Time e.g.00:00:11.88" id="vcutsend"
+																	title="Set the end position of the video">
+															</div>
+														</div>
+													</form>
+												</div>
+												
+											</div>
+											<div id="trimBar" style="">
+												<div id="leftMask" class="preAsset" style=""></div>
+												<div id="leftPos" class="preAsset" style=""></div>
+												<div id="posLine" class="preAsset" style=""></div>
+												<div id="rightPos" class="preAsset" style=""></div>
+												<div id="rightMask" class="preAsset" style=""></div>
+												<div id="thumbsBar" style=""></div>
+											</div>
+											
+										</div>
+										<div class="brow">
+											<div class="bcontent">
+												<div id="cutBtn" class="bbutton">Trim Video<i class="fa fa-right-open"></i>
+												</div>
+												<div id="cutOutputArea" class="outarea"></div>
+												<div class="JSLoadingEl" style="text-align:center;"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div id="fun_convert" class="tabcontent2">
+									<form id="frmoptions">
+										<div class="brow">
+											<div class="fullCol optionitem">
+												<span class="optionlabel" style="width:25%;">Output file format:</span>
+												<div class="optioninput" style="width:74%;">
+													<label class='container'>MP4<input type='radio' checked='checked'
+															name='format' value='MP4' onclick='btnFormat_Click();'><span
+															class='checkmark'></span></label><label
+														class='container'>AVI<input type='radio' name='format'
+															value='AVI' onclick='btnFormat_Click();'><span
+															class='checkmark'></span></label><label
+														class='container'>MPG<input type='radio' name='format'
+															value='MPG' onclick='btnFormat_Click();'><span
+															class='checkmark'></span></label><label
+														class='container'>MOV<input type='radio' name='format'
+															value='MOV' onclick='btnFormat_Click();'><span
+															class='checkmark'></span></label><label
+														class='container'>FLV<input type='radio' name='format'
+															value='FLV' onclick='btnFormat_Click();'><span
+															class='checkmark'></span></label><label
+														class='container'>3GP<input type='radio' name='format'
+															value='3GP' onclick='btnFormat_Click();'><span
+															class='checkmark'></span></label><label
+														class='container'>WEBM<input type='radio' name='format'
+															value='WEBM' onclick='btnFormat_Click();'><span
+															class='checkmark'></span></label><label
+														class='container'>MKV<input type='radio' name='format'
+															value='MKV' onclick='btnFormat_Click();'><span
+															class='checkmark'></span></label><label
+														class='container'>Apple Video<input type='radio' name='format'
+															value='Apple Video' onclick='btnFormat_Click();'><span
+															class='checkmark'></span></label><label
+														class='container'>Android Video<input type='radio' name='format'
+															value='Android Video' onclick='btnFormat_Click();'><span
+															class='checkmark'></span></label><label
+														class='container'>WMV<input type='radio' name='format'
+															value='WMV' onclick='btnFormat_Click();'><span
+															class='checkmark'></span></label><label
+														class='container'>GIF<input type='radio' name='format'
+															value='GIF' onclick='btnFormat_Click();'><span
+															class='checkmark'></span></label>
+												</div>
+											</div>
+											<div id="formatSetDiv"> </div>
+										</div>
+										<div class="brow">
+											<div class="optionitem">
+												<span class="optionlabel">Video encoder:</span>
+												<select class="optioninput" id="vencoder">
+													<option value="libx264" select="selected">H.264</option>
+													<option value="mpeg4">MPEG-4</option>
+												</select>
+											</div>
+											<div class="optionitem">
+												<span class="optionlabel">Remove audio:</span>
+												<select class="optioninput" id="disAudio">
+													<option value="no" selected="selected">no</option>
+													<option value="yes">yes</option>
+												</select>
+											</div>
+										</div>
+										<div class="brow">
+											<div class="optionitem">
+												<span class="optionlabel">Audio encoder:</span>
+												<select class="optioninput" id="aencoder">
+													<option value="libmp3lame" select="selected">MP3</option>
+													<option value="aac">AAC</option>
+												</select>
+											</div>
+											<div class="optionitem">
+												<span class="optionlabel">Audio quality:</span>
+												<select class="optioninput" id="abitrate">
+													<option value="48k">48k</option>
+													<option value="64k">64k</option>
+													<option value="80k">80k</option>
+													<option value="96k">96k</option>
+													<option value="128k" selected="selected">128k</option>
+													<option value="160k">160k</option>
+													<option value="256k">256k</option>
+												</select>
+											</div>
+										</div>
+										<div class="brow">
+											<div class="optionitem">
+												<span class="optionlabel">Audio sample:</span>
+												<select class="optioninput" id="asample">
+													<option value="8000">8000</option>
+													<option value="11025">11025</option>
+													<option value="12000">12000</option>
+													<option value="16000">16000</option>
+													<option value="22050">22050</option>
+													<option value="24000">24000</option>
+													<option value="32000">32000</option>
+													<option value="44100">44100</option>
+													<option value="48000" selected="selected">48000</option>
+												</select>
+											</div>
+											<div class="optionitem">
+												<span class="optionlabel">Audio channel:</span>
+												<select class="optioninput" id="achannels">
+													<option value="1">Mono</option>
+													<option value="2" selected="selected">Stereo</option>
+												</select>
+											</div>
+										</div>
+										<div class="brow">
+											<div class="optionitem">
+												<span class="optionlabel">Preset:</span>
+												<select class="optioninput" id="vpreset">
+													<option value="" selected="selected">no</option>
+													<option value="1920x1080 25">HD 1080p(1920x1080) 25p</option>
+													<option value="1280x720 25">HD 720p(1280x720) 25p</option>
+													<option value="854x480 25">480p(854x480) 25p</option>
+													<option value="640x360 25">360p(640x360) 25p</option>
+													<option value="426x240 25">260p(426x240) 25p</option>
+													<option value="720x576 25">DVD(720x576) 25p</option>
+													<option value="640x480 25">TV(640x480) 25p</option>
+													<option value="320x240 25">Mobile(320x240) 25p</option>
+													<option value="1920x1080 30">HD 1080p(1920x1080) 30p</option>
+													<option value="1280x720 30">HD 720p(1280x720) 30p</option>
+													<option value="854x480 30">480p(854x480) 30p</option>
+													<option value="640x360 30">360p(640x360) 30p</option>
+													<option value="426x240 30">260p(426x240) 30p</option>
+													<option value="720x576 30">DVD(720x576) 30p</option>
+													<option value="640x480 30">TV(640x480) 30p</option>
+													<option value="320x240 30">Mobile(320x240) 30p</option>
+													<option value="1920x1080 60">HD 1080p(1920x1080) 60p</option>
+													<option value="1280x720 60">HD 720p(1280x720) 60p</option>
+													<option value="854x480 60">480p(854x480) 60p</option>
+													<option value="640x360 60">360p(640x360) 60p</option>
+													<option value="426x240 60">260p(426x240) 60p</option>
+													<option value="720x576 60">DVD(720x576) 60p</option>
+													<option value="640x480 60">TV(640x480) 60p</option>
+													<option value="320x240 60">Mobile(320x240) 60p</option>
+												</select>
+											</div>
+											<div class="optionitem">
+												<span class="optionlabel">Video bitrate:</span>
+												<input type="text" class="optioninput" placeholder="e.g.1024K"
+													id="vbriate"
+													title="Setting the video bit rate can control the size of the output file and the quality of the output video.">
+											</div>
+										</div>
+										<div class="brow">
+											<div class="optionitem">
+												<span class="optionlabel">Resolution:</span>
+												<input type="text" class="optioninput" placeholder="e.g.720x576"
+													id="vsize">
+											</div>
+											<div class="optionitem">
+												<span class="optionlabel">Video fps:</span>
+												<input type="text" class="optioninput" placeholder="e.g.25" id="vfps">
+											</div>
+										</div>
+									</form>
+									<div class="bcontent">
+										<div id="convertBtn" class="bbutton">Convert<i class="fa fa-right-open"></i>
+										</div>
+										<div id="convertOutputArea" class="outarea"></div>
+										<div class="JSLoadingEl" style="text-align:center;"></div>
+									</div>
+								</div>
+
+								<div id="fun_rotate" class="tabcontent2">
+									<div class="bcontent">
+										<div id="rotateOptions" style="margin:15px;">
+											<div class="brow tcenter">
+												<form id="rotateFrm">
+													<div class="optionflex">
+														<label class="container" style="margin-top:8px;">Turn 90 degrees
+															clockwise<input type="radio" checked="checked"
+																name="rotate_o" value="90Clockwise"><span
+																class="checkmark"></span></label>
+														<!-- <img src="img/90clockwise.png" style="height:50px;" /> -->
+													</div>
+													<div class="optionflex">
+														<label class="container" style="margin-top:8px;">Turn 90 degrees
+															counterclockwise<input type="radio" name="rotate_o"
+																value="90CounterClockwise"><span
+																class="checkmark"></span></label>
+														<!-- <img src="img/90counterclockwise.png" style="height:50px;" /> -->
+													</div>
+												</form>
+											</div>
+											<div class="brow tcenter" style="margin-top:20px;">
+												<a class="linkBtn adsetting" href="javascript:void(0);">
+													<i class="fa fa-cog"></i>Set video output format </a>
+											</div>
+										</div>
+										<div class="brow">
+											<div class="bcontent">
+												<div id="rotateBtn" class="bbutton">Rotate<i
+														class="fa fa-right-open"></i></div>
+												<div id="rotateOutputArea" class="outarea"></div>
+												<div class="JSLoadingEl" style="text-align:center;"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="fun_filp" class="tabcontent2">
+									<div class="bcontent">
+										<div id="flipOptions" style="margin:15px;">
+											<div class="brow tcenter">
+												<form id="flipFrm">
+													<div class="optionflex">
+														<label class="container" style="margin-top:8px;">Horizontal
+															mirroring<input type="radio" checked="checked" name="flip_o"
+																value="hflip"><span class="checkmark"></span></label>
+														<!-- <img src="img/flip-horizontally.png" style="height:50px;" /> -->
+													</div>
+													<div class="optionflex">
+														<label class="container" style="margin-top:8px;">Vertical
+															mirroring<input type="radio" name="flip_o"
+																value="vflip"><span class="checkmark"></span></label>
+														<!-- <img src="img/flip-vertically.png" style="height:50px;" /> -->
+													</div>
+												</form>
+											</div>
+											<div class="brow tcenter" style="margin-top:20px;">
+												<a class="linkBtn adsetting" href="javascript:void(0);">
+													<i class="fa fa-cog"></i>Set video output format </a>
+											</div>
+										</div>
+										<div class="brow">
+											<div class="bcontent">
+												<div id="flipBtn" class="bbutton">Mirror<i class="fa fa-right-open"></i>
+												</div>
+												<div id="flipOutputArea" class="outarea"></div>
+												<div class="JSLoadingEl" style="text-align:center;"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="fun_compress" class="tabcontent2">
+									<div class="bcontent">
+										<div id="compressOptions" style="margin:15px;">
+											<div class="brow tcenter">
+												<span class="unselectable" id="sliderMin">0</span>
+												<div class="range-slider unselectable" id="outFileSize">
+													<span class="unselectable"></span>
+												</div>
+												<span class="unselectable" id="sliderMax">10M</span>
+											</div>
+											<div class="brow tcenter">
+												<form id="compressFrm">
+													<div class="oitem">
+														<label>Output file size:</label>
+														<div style="width:200px;">
+															<input type="text" class="oinput" placeholder="e.g.10M"
+																id="vfilesize"
+																title="Set the size of the output file. This is an approximate value. The final file size may not be the same.">
+														</div>
+													</div>
+												</form>
+											</div>
+											<div class="brow tcenter" style="margin-top:20px;">
+												<a class="linkBtn adsetting" href="javascript:void(0);">
+													<i class="fa fa-cog"></i>Set video output format </a>
+											</div>
+										</div>
+										<div class="brow">
+											<div class="bcontent">
+												<div id="compressBtn" class="bbutton">Compress<i
+														class="fa fa-right-open"></i></div>
+												<div id="compressOutputArea" class="outarea"></div>
+												<div class="JSLoadingEl" style="text-align:center;"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="fun_resize" class="tabcontent2">
+									<div class="brow" style="margin-top:20px;">
+										<div class="fullCol optionitem">
+											<span class="optionlabel" style="width:25%;">Video resolution</span>
+											<div class="optioninput" style="width:74%;">
+												<label class="container">HD 1080p(1920x1080)<input type="radio"
+														checked="checked" name="resolution" value="1920x1080"
+														onclick="btnResolution_Click();"><span
+														class="checkmark"></span></label>
+												<label class="container">HD 720p(1280x720)<input type="radio"
+														name="resolution" value="1280x720"
+														onclick="btnResolution_Click();"><span
+														class="checkmark"></span></label>
+												<label class="container">480p(854x480)<input type="radio"
+														name="resolution" value="854x480"
+														onclick="btnResolution_Click();"><span
+														class="checkmark"></span></label>
+												<label class="container">360p(640x360)<input type="radio"
+														name="resolution" value="640x360"
+														onclick="btnResolution_Click();"><span
+														class="checkmark"></span></label>
+												<label class="container">260p(426x240)<input type="radio"
+														name="resolution" value="426x240"
+														onclick="btnResolution_Click();"><span
+														class="checkmark"></span></label>
+												<label class="container">DVD(720x576)<input type="radio"
+														name="resolution" value="720x576"
+														onclick="btnResolution_Click();"><span
+														class="checkmark"></span></label>
+												<label class="container">TV(640x480)<input type="radio"
+														name="resolution" value="640x480"
+														onclick="btnResolution_Click();"><span
+														class="checkmark"></span></label>
+												<label class="container">Mobile(320x240)<input type="radio"
+														name="resolution" value="320x240"
+														onclick="btnResolution_Click();"><span
+														class="checkmark"></span></label>
+											</div>
+										</div>
+									</div>
+									<div class="brow">
+										<div class="fullCol optionitem">
+											<span class="optionlabel" style="width:25%;">Video fps</span>
+											<div class="optioninput" style="width:74%;">
+												<label class="container">25p<input type="radio" checked="checked"
+														name="fps" value="25" onclick="btnFPS_Click();"><span
+														class="checkmark"></span></label>
+												<label class="container">30p<input type="radio" name="fps" value="30"
+														onclick="btnFPS_Click();"><span
+														class="checkmark"></span></label>
+												<label class="container">60p<input type="radio" name="fps" value="60"
+														onclick="btnFPS_Click();"><span
+														class="checkmark"></span></label>
+											</div>
+										</div>
+									</div>
+									<div class="brow tcenter">
+										<form id="resizeFrm">
+											<div class="oitem">
+												<label>Resolution:</label>
+												<div style="width:250px;">
+													<input type="text" class="oinput" placeholder="e.g.720x576"
+														id="reseize_vsize" value="1920x1080"
+														title="Set the video resolution, the format is: width X height.">
+												</div>
+											</div>
+											<div class="oitem">
+												<label>Video fps:</label>
+												<div style="width:250px;">
+													<input type="text" class="oinput" placeholder="e.g.25"
+														id="reseize_vfps" value="25" title="Set video fps">
+												</div>
+											</div>
+										</form>
+									</div>
+									<div class="brow tcenter" style="margin-top:20px;">
+										<a class="linkBtn adsetting" data-pane="resize" href="javascript:void(0);">
+											<i class="fa fa-cog"></i>Set video output format </a>
+									</div>
+									<div class="bcontent">
+										<div id="resizeBtn" class="bbutton">Resize<i class="fa fa-right-open"></i></div>
+										<div id="resizeOutputArea" class="outarea"></div>
+										<div class="JSLoadingEl" style="text-align:center;"></div>
+									</div>
+								</div>
+								<div id="fun_crop" class="tabcontent2">
+									<form id="cropFrm">
+										<div class="brow tcenter">
+											<div class="oitem">
+												<label>Starting X:</label>
+												<div style="width:100px;">
+													<input type="text" class="oinput cropparam" placeholder="e.g.10"
+														id="crop_x" value="10"
+														title="Set the X coordinate value of the upper left corner of the crop area">
+												</div>
+											</div>
+											<div class="oitem">
+												<label>Width:</label>
+												<div style="width:100px;">
+													<input type="text" class="oinput cropparam" placeholder="e.g.100"
+														id="crop_width" value="100" title="Set crop area width">
+												</div>
+											</div>
+										</div>
+										<div class="brow tcenter">
+											<div class="oitem">
+												<label>Starting Y:</label>
+												<div style="width:100px;">
+													<input type="text" class="oinput cropparam" placeholder="e.g.10"
+														id="crop_y" value="10"
+														title="Set the Y coordinate value of the upper left corner of the crop area">
+												</div>
+											</div>
+											<div class="oitem">
+												<label>Height:</label>
+												<div style="width:100px;">
+													<input type="text" class="oinput cropparam" placeholder="e.g.100"
+														id="crop_height" value="100" title="Set crop area height">
+												</div>
+											</div>
+										</div>
+									</form>
+									<div class="brow tcenter" style="margin-top:20px;">
+										<a class="linkBtn adsetting" href="javascript:void(0);">
+											<i class="fa fa-cog"></i>Set video output format </a>
+									</div>
+									<div class="bcontent">
+										<div id="cropBtn" class="bbutton">Crop<i class="fa fa-right-open"></i></div>
+										<div id="cropOutputArea" class="outarea"></div>
+										<div class="JSLoadingEl" style="text-align:center;"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div id="settingDialog" class="dialog">
+			<!-- Modal content -->
+			<div class="dialog-content">
+				<span class="close">&times;</span>
+				<div class="brow">
+					<form id="g_frmoptions">
+						<div class="brow">
+							<div class="fullCol optionitem">
+								<span class="optionlabel" style="width:25%;">Output file format:</span>
+								<div class="optioninput" style="width:74%;">
+									<!--<label class='container'>Original format<input type='radio' checked='checked' name='g_format' value='original' onclick='g_btnFormat_Click();'><span class='checkmark'></span></label>	-->
+									<label class='container'>MP4<input type='radio' checked='checked' name='g_format'
+											value='MP4' onclick='g_btnFormat_Click();'><span
+											class='checkmark'></span></label><label class='container'>AVI<input
+											type='radio' name='g_format' value='AVI'
+											onclick='g_btnFormat_Click();'><span class='checkmark'></span></label><label
+										class='container'>MPG<input type='radio' name='g_format' value='MPG'
+											onclick='g_btnFormat_Click();'><span class='checkmark'></span></label><label
+										class='container'>MOV<input type='radio' name='g_format' value='MOV'
+											onclick='g_btnFormat_Click();'><span class='checkmark'></span></label><label
+										class='container'>FLV<input type='radio' name='g_format' value='FLV'
+											onclick='g_btnFormat_Click();'><span class='checkmark'></span></label><label
+										class='container'>3GP<input type='radio' name='g_format' value='3GP'
+											onclick='g_btnFormat_Click();'><span class='checkmark'></span></label><label
+										class='container'>WEBM<input type='radio' name='g_format' value='WEBM'
+											onclick='g_btnFormat_Click();'><span class='checkmark'></span></label><label
+										class='container'>MKV<input type='radio' name='g_format' value='MKV'
+											onclick='g_btnFormat_Click();'><span class='checkmark'></span></label><label
+										class='container'>Apple Video<input type='radio' name='g_format'
+											value='Apple Video' onclick='g_btnFormat_Click();'><span
+											class='checkmark'></span></label><label class='container'>Android
+										Video<input type='radio' name='g_format' value='Android Video'
+											onclick='g_btnFormat_Click();'><span class='checkmark'></span></label><label
+										class='container'>WMV<input type='radio' name='g_format' value='WMV'
+											onclick='g_btnFormat_Click();'><span class='checkmark'></span></label><label
+										class='container'>GIF<input type='radio' name='g_format' value='GIF'
+											onclick='g_btnFormat_Click();'><span class='checkmark'></span></label>
+								</div>
+							</div>
+						</div>
+						<div class="brow">
+							<div class="optionitem">
+								<span class="optionlabel">Video encoder:</span>
+								<select class="optioninput" id="g_vencoder">
+								</select>
+							</div>
+							<div class="optionitem">
+								<span class="optionlabel">Remove audio:</span>
+								<select class="optioninput" id="g_disAudio">
+									<option value="no" selected="selected">no</option>
+									<option value="yes">yes</option>
+								</select>
+							</div>
+						</div>
+						<div class="brow">
+							<div class="optionitem">
+								<span class="optionlabel">Audio encoder:</span>
+								<select class="optioninput" id="g_aencoder">
+								</select>
+							</div>
+							<div class="optionitem">
+								<span class="optionlabel">Audio quality:</span>
+								<select class="optioninput" id="g_abitrate">
+									<option value="48k">48k</option>
+									<option value="64k">64k</option>
+									<option value="80k">80k</option>
+									<option value="96k">96k</option>
+									<option value="128k" selected="selected">128k</option>
+									<option value="160k">160k</option>
+									<option value="256k">256k</option>
+								</select>
+							</div>
+						</div>
+						<div class="brow">
+							<div class="optionitem">
+								<span class="optionlabel">Audio sample:</span>
+								<select class="optioninput" id="g_asample">
+									<option value="8000">8000</option>
+									<option value="11025">11025</option>
+									<option value="12000">12000</option>
+									<option value="16000">16000</option>
+									<option value="22050">22050</option>
+									<option value="24000">24000</option>
+									<option value="32000">32000</option>
+									<option value="44100">44100</option>
+									<option value="48000" selected="selected">48000</option>
+								</select>
+							</div>
+							<div class="optionitem">
+								<span class="optionlabel">Audio channel:</span>
+								<select class="optioninput" id="g_achannels">
+									<option value="1">Mono</option>
+									<option value="2" selected="selected">Stereo</option>
+								</select>
+							</div>
+						</div>
+						<div id="resizeOp">
+							<div class="brow">
+								<div class="optionitem">
+									<span class="optionlabel">Preset:</span>
+									<select class="optioninput" id="g_vpreset">
+										<option value="" selected="selected">no</option>
+										<option value="1920x1080 25">HD 1080p(1920x1080) 25p</option>
+										<option value="1280x720 25">HD 720p(1280x720) 25p</option>
+										<option value="854x480 25">480p(854x480) 25p</option>
+										<option value="640x360 25">360p(640x360) 25p</option>
+										<option value="426x240 25">260p(426x240) 25p</option>
+										<option value="720x576 25">DVD(720x576) 25p</option>
+										<option value="640x480 25">TV(640x480) 25p</option>
+										<option value="320x240 25">Mobile(320x240) 25p</option>
+										<option value="1920x1080 30">HD 1080p(1920x1080) 30p</option>
+										<option value="1280x720 30">HD 720p(1280x720) 30p</option>
+										<option value="854x480 30">480p(854x480) 30p</option>
+										<option value="640x360 30">360p(640x360) 30p</option>
+										<option value="426x240 30">260p(426x240) 30p</option>
+										<option value="720x576 30">DVD(720x576) 30p</option>
+										<option value="640x480 30">TV(640x480) 30p</option>
+										<option value="320x240 30">Mobile(320x240) 30p</option>
+										<option value="1920x1080 60">HD 1080p(1920x1080) 60p</option>
+										<option value="1280x720 60">HD 720p(1280x720) 60p</option>
+										<option value="854x480 60">480p(854x480) 60p</option>
+										<option value="640x360 60">360p(640x360) 60p</option>
+										<option value="426x240 60">260p(426x240) 60p</option>
+										<option value="720x576 60">DVD(720x576) 60p</option>
+										<option value="640x480 60">TV(640x480) 60p</option>
+										<option value="320x240 60">Mobile(320x240) 60p</option>
+									</select>
+								</div>
+							</div>
+							<div class="brow">
+								<div class="optionitem">
+									<span class="optionlabel">Resolution:</span>
+									<input type="text" class="optioninput" placeholder="e.g.720x576" id="g_vsize">
+								</div>
+								<div class="optionitem">
+									<span class="optionlabel">Video fps:</span>
+									<input type="text" class="optioninput" placeholder="e.g.25" id="g_vfps">
+								</div>
+							</div>
+						</div>
+						<div class="brow">
+							<div class="optionitem">
+								<span class="optionlabel">Video bitrate:</span>
+								<input type="text" class="optioninput" placeholder="e.g.1024K" id="g_vbriate"
+									title="Setting the video bit rate can control the size of the output file and the quality of the output video.">
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="js/bil.js"></script>
+	</div>
+	
+	
+</body>
+
+</html>
